@@ -6,12 +6,23 @@
             "datareplicate2-mng/flux-pingpong2": {
                 "name": "flux-pingpong2",
                 "author": "datareplicate2-mng",
-                "multiple_outputs": false,
+                "multiple_outputs": true,
                 "description": "Flux fine-tuned with LoRA dreambooth conditioned on a pingpong ball case. Use the trigger word 'TOKPG' to generate images with this model.",
                 "trigger_word": "TOKPG",
                 "lora_dreambooth_params": {
                     "steps": 1500,
                     "lora_rank": 16
+                }
+            },
+            "datareplicate2-mng/flux-pingpong3": {
+                "name": "flux-pingpong3",
+                "author": "datareplicate2-mng",
+                "multiple_outputs": false,
+                "description": "Flux fine-tuned with LoRA dreambooth conditioned on a pingpong ball case. Use the trigger word 'TOK' to generate images with this model.",
+                "trigger_word": "TOK",
+                "lora_dreambooth_params": {
+                    "steps": 2500,
+                    "lora_rank": 32
                 }
             }
         },
@@ -44,8 +55,8 @@
         }
     },
     "lora_dreambooth_params": {
-        "steps": 1500,
-        "lora_rank": 16
+        "steps": 2500,
+        "lora_rank": 32
     },
     "new_replicate_models_visibility": "private"
 }
