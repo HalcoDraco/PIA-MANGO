@@ -3,7 +3,6 @@ from settings_manager import SettingsManager
 from features.feature_1 import train_dreambooth_model, create_replicate_model
 from features.feature_2 import run_replicate_model
 
-
 settings = SettingsManager.get_settings()
 
 REPLICATE_API_KEY = settings.get("replicate_api_key", None)
