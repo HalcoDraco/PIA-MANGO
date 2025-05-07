@@ -36,5 +36,5 @@ def relight_image(subject_image,
         raise
 
     for index, item in enumerate(output):
-        with open(f"output_{index}.webp", "wb") as file:
+        with open(f"images/output/output_{index}.jpg", "wb") as file:
             file.write(item.read())

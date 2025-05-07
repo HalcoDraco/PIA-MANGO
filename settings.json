@@ -24,6 +24,17 @@
                     "steps": 2500,
                     "lora_rank": 32
                 }
+            },
+            "datareplicate2-mng/my-lora-model": {
+                "name": "my-lora-model",
+                "author": "datareplicate2-mng",
+                "multiple_outputs": false,
+                "description": "Fine-tuning Flux with LoRA using DreamBooth",
+                "trigger_word": "TOK",
+                "lora_dreambooth_params": {
+                    "steps": 2500,
+                    "lora_rank": 32
+                }
             }
         },
         "feature_2": {

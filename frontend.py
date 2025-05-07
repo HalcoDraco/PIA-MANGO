@@ -63,7 +63,7 @@ else:
             steps = st.number_input("Training Steps", min_value=100, step=100, value=default_steps)
             lora_rank = st.number_input("LoRA Rank", min_value=4, step=4, value=default_rank)
 
-            uploaded_images = st.file_uploader("Upload Training Images", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
+            uploaded_images = st.file_uploader("Upload Training Images", type=["jpg", "jpeg", "png","zip"], accept_multiple_files=True)
 
             if st.button("Start Training"):
                 if not uploaded_images:
@@ -132,7 +132,7 @@ else:
                     images = run_replicate_model(model_key, input_data)
                     st.success("Images generated successfully!")
                     for img in images:
-                        st.image(img, use_column_width=True)
+                        st.image(img, use_container_width=True)
                 except Exception as e:
                     st.error(f"Failed to generate image: {str(e)}")
 
@@ -140,34 +140,32 @@ else:
     elif page == "Feature 3":
         st.header("Feature 3: AI-Powered Background Replacement & Dynamic Relighting")
         st.markdown("Transform product visuals effortlessly. Our IC-Lighting technology intelligently replaces backgrounds and simulates natural light sources to enhance realism, helping your images stand out across platforms.")
-        col1, col2 = st.columns([2, 3])
-
-        with col1:
+        with st.sidebar:
+            st.header("Parameters")
             height = st.number_input("Height", min_value=1, value=640, step=64)
             width = st.number_input("Width", min_value=1, value=512, step=64)
             light = st.selectbox("Light source", ["Left Light", "Right Light", "Top Light", "Bottom Light"])
             n_images = st.number_input("Image number", min_value=1, value=1, step=1)
             steps = st.number_input("Steps", min_value=1, value=25, step=1)
             highres_scale = st.number_input("Highres scale", min_value=1.0, max_value=3.0, value=1.5, step=0.1)
-            os.makedirs("tmp", exist_ok=True)
-            uploaded_file = st.file_uploader("Upload image for training", type=["jpg", "jpeg", "png"])
-
-        with col2:
-            st.subheader("AI Description")
-            st.write("The image is a modern fashion photograph featuring a model in a stylish urban outfit...")
-            add_caption = st.checkbox("Add prompt")
-            if add_caption:
-                caption = st.text_area("Enter your prompt for the relighting process")
-
-            if st.button("Generate image"):
-                if uploaded_file:
-                    with open("tmp/temp_image.jpg", "wb") as f:
+        
+        uploaded_file = st.file_uploader("Upload image for training", type=["jpg", "jpeg", "png"])
+        caption = st.text_input("Enter your prompt for the relighting process", value='Move the sunset light to the right.')
+        new_filename = st.text_input("Filename of the generated image", value="new_image.png")
+        if st.button("Generate Image"):
+            if uploaded_file:
+                with tempfile.TemporaryDirectory() as tmpdir:
+                    temp_image_path = os.path.join(tmpdir, "input.jpg")
+                    with open(temp_image_path, "wb") as f:
                         f.write(uploaded_file.getvalue())
-                    image_file = open("./tmp/temp_image.jpg", "rb")
-                    relight_image(image_file, prompt = caption, height=height, width=width, light_source=light, n_images=n_images, highres_scale=highres_scale, steps=steps)
-                    st.image("output_0.webp", caption='Relighted image.', use_container_width=True)
-                else:
-                    st.warning("Please upload an image before training.")
+                    with open(temp_image_path, "rb") as image_file:
+                        relight_image(image_file, prompt=caption, height=height, width=width, light_source=light, n_images=n_images, highres_scale=highres_scale, steps=steps)
+                    if os.path.exists(temp_image_path):
+                        st.image('images/output/output_0.jpg', use_container_width=True)
+                    else:
+                        st.error("Image generation failed. No output file found.")
+            else:
+                st.warning("⚠️ Please upload an image before generating.")
 
     # Pipeline 1
     elif page == "Pipeline 1":

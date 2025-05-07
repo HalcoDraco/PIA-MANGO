@@ -30,12 +30,25 @@ def run_replicate_model(model_str: str, input: dict):
     
     # Get the latest version of the model
     model = replicate.models.get(model_str)
-    version = model.versions.list()[0]
-    
-    result = replicate.run(
-        f"{model_str}:{version.id}",
-        input=input
-    )
+    print(f"Model: {model_str}")
+
+    # Check if the model has versions
+    # versions = model.versions.list()
+    versions = False
+    print(f"Versions: {versions}")
+
+    if versions:
+        version = versions[0]  # Use the first version if available
+        result = replicate.run(
+            f"{model_str}:{version.id}",
+            input=input
+        )
+    else:
+        # If no versions, use the model directly
+        result = replicate.run(
+            f"{model_str}",
+            input=input
+        )
 
     if type(result) == list:
         return [Image.open(BytesIO(image.read())) for image in result]
