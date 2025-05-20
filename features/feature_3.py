@@ -1,6 +1,9 @@
 import replicate
 import os
 from dotenv import load_dotenv
+from settings_manager import SettingsManager
+
+settings = SettingsManager.get_settings()
 
 # Load API key from .env file
 def relight_image(subject_image, 
@@ -11,9 +14,6 @@ def relight_image(subject_image,
                   n_images = 1,
                   highres_scale = 1.5,
                   steps = 25):
-    load_dotenv()
-    api_token = os.getenv("REPLICATE_API_TOKEN")
-    replicate_client = replicate.Client(api_token)
 
     input = {
         "prompt": prompt,
@@ -28,7 +28,7 @@ def relight_image(subject_image,
 
     try:
         output = replicate.run(
-            "zsxkib/ic-light:d41bcb10d8c159868f4cfbd7c6a2ca01484f7d39e4613419d5952c61562f1ba7",
+            settings["models"]["feature_3"]["model"],
             input=input
         )
     except replicate.exceptions.ModelError as e:
