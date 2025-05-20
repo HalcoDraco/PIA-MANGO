@@ -1,6 +1,5 @@
 import replicate
 import os
-from dotenv import load_dotenv
 from settings_manager import SettingsManager
 
 settings = SettingsManager.get_settings()

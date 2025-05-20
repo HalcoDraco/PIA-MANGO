@@ -26,6 +26,7 @@ class SettingsManager:
     """
     
     _FILEPATH = "settings.json"
+    _IGNORED_KEY_PATH = "ignored_api_key.txt"
     _settings = None
 
     @classmethod
@@ -71,5 +72,9 @@ class SettingsManager:
             raise FileNotFoundError(f"Settings file {cls._FILEPATH} not found.")
         
         with open(cls._FILEPATH, "r") as f:
-            return json.load(f)
+            settings_json = json.load(f)
+        with open(cls._IGNORED_KEY_PATH, "r") as f:
+            ignored_api_key = f.read().strip()
+        settings_json["replicate_api_key"] = ignored_api_key
+        return settings_json
     
