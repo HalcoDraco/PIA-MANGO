@@ -47,8 +47,8 @@
                 "author": "black-forest-labs",
                 "multiple_outputs": false
             },
-            "ideogram-ai/ideogram-v2": {
-                "name": "Ideogram V2",
+            "ideogram-ai/ideogram-v3-quality": {
+                "name": "Ideogram V3 Quality",
                 "author": "ideogram-ai",
                 "multiple_outputs": false
             },
@@ -60,6 +60,16 @@
             "luma/photon": {
                 "name": "Photon",
                 "author": "luma",
+                "multiple_outputs": false
+            },
+            "google/imagen-3": {
+                "name": "Imagen 3",
+                "author": "google",
+                "multiple_outputs": false
+            },
+            "minimax/image-01": {
+                "name": "Image 01",
+                "author": "minimax",
                 "multiple_outputs": false
             }
         },
