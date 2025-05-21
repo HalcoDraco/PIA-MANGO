@@ -1,3 +1,5 @@
 replicate
 dotenv
 streamlit
+fastapi
+uvicorn
