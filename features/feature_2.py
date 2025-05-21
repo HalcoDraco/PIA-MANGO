@@ -8,7 +8,13 @@ settings = SettingsManager.get_settings()
 MODELS1 = settings["models"]["feature_1"]
 MODELS2 = settings["models"]["feature_2"]
 
-def run_replicate_model(model_str: str, input: dict):
+REPLICATE_API_KEY = settings.get("replicate_api_key", None)
+if not REPLICATE_API_KEY:
+    raise ValueError("Replicate API key missing")
+
+replicate_client = replicate.Client(api_token=REPLICATE_API_KEY)
+
+def run_replicate_model(model_str: str, input: dict, ):
     """
     Runs a specified model from Replicate with the given input parameters.
 
@@ -28,29 +34,27 @@ def run_replicate_model(model_str: str, input: dict):
     if model_str not in MODELS1 and model_str not in MODELS2:
         raise ValueError(f"Model '{model_str}' is not available.")
     
-    # Get the latest version of the model
-    model = replicate.models.get(model_str)
-    print(f"Model: {model_str}")
-
-    # Check if the model has versions
-    # versions = model.versions.list()
-    versions = False
-    print(f"Versions: {versions}")
+    model = replicate_client.models.get(model_str)
+    versions = False  # Or you can uncomment to fetch versions if you want
 
     if versions:
-        version = versions[0]  # Use the first version if available
-        result = replicate.run(
+        version = versions[0]
+        result = replicate_client.run(
             f"{model_str}:{version.id}",
             input=input
         )
     else:
-        # If no versions, use the model directly
-        result = replicate.run(
+        result = replicate_client.run(
             f"{model_str}",
             input=input
         )
 
-    if type(result) == list:
+    # result is expected to be file-like objects
+    if isinstance(result, list):
+        from PIL import Image
+        from io import BytesIO
         return [Image.open(BytesIO(image.read())) for image in result]
     else:
+        from PIL import Image
+        from io import BytesIO
         return [Image.open(BytesIO(result.read()))]
