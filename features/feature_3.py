@@ -1,5 +1,4 @@
 import replicate
-import os
 from settings_manager import SettingsManager
 
 settings = SettingsManager.get_settings()

@@ -1,18 +1,10 @@
 import replicate
-from PIL import Image
-from io import BytesIO
 from settings_manager import SettingsManager
 
 settings = SettingsManager.get_settings()
 
 MODELS1 = settings["models"]["feature_1"]
 MODELS2 = settings["models"]["feature_2"]
-
-REPLICATE_API_KEY = settings.get("replicate_api_key", None)
-if not REPLICATE_API_KEY:
-    raise ValueError("Replicate API key missing")
-
-replicate_client = replicate.Client(api_token=REPLICATE_API_KEY)
 
 def run_replicate_model(model_str: str, input: dict, ):
     """
@@ -34,17 +26,20 @@ def run_replicate_model(model_str: str, input: dict, ):
     if model_str not in MODELS1 and model_str not in MODELS2:
         raise ValueError(f"Model '{model_str}' is not available.")
     
-    model = replicate_client.models.get(model_str)
-    versions = False  # Or you can uncomment to fetch versions if you want
+    model = replicate.models.get(model_str)
+    try:
+        versions = model.versions.list()
+    except Exception as e:
+        versions = []
 
     if versions:
         version = versions[0]
-        result = replicate_client.run(
+        result = replicate.run(
             f"{model_str}:{version.id}",
             input=input
         )
     else:
-        result = replicate_client.run(
+        result = replicate.run(
             f"{model_str}",
             input=input
         )

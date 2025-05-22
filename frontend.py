@@ -3,7 +3,7 @@ import os
 import tempfile
 import zipfile
 from settings_manager import SettingsManager
-from features.feature_1 import train_dreambooth_model, create_replicate_model
+from features.feature_1 import train_dreambooth_model
 from features.feature_2 import run_replicate_model
 from features.feature_3 import relight_image
 
@@ -63,21 +63,32 @@ else:
             steps = st.number_input("Training Steps", min_value=100, step=100, value=default_steps)
             lora_rank = st.number_input("LoRA Rank", min_value=4, step=4, value=default_rank)
 
-            uploaded_images = st.file_uploader("Upload Training Images", type=["jpg", "jpeg", "png","zip"], accept_multiple_files=True)
+            uploaded_files = st.file_uploader("Upload Training Images", type=["jpg", "jpeg", "png","zip"], accept_multiple_files=True)
 
             if st.button("Start Training"):
-                if not uploaded_images:
+                if not uploaded_files:
                     st.warning("Please upload at least one image.")
                 else:
                     with st.spinner("Uploading and starting training..."):
                         try:
                             with tempfile.TemporaryDirectory() as tmpdir:
                                 image_paths = []
-                                for idx, img_file in enumerate(uploaded_images):
-                                    path = os.path.join(tmpdir, f"img_{idx}.jpg")
-                                    with open(path, "wb") as f:
-                                        f.write(img_file.read())
-                                    image_paths.append(path)
+                                for idx, uploaded_file in enumerate(uploaded_files):
+
+                                    # Check if the uploaded file is a zip file
+                                    if uploaded_file.name.endswith(".zip"):
+                                        with zipfile.ZipFile(uploaded_file, "r") as zip_ref:
+                                            zip_ref.extractall(os.path.join(tmpdir, uploaded_file.name, f"{idx}"))
+                                            for file in os.listdir(os.path.join(tmpdir, uploaded_file.name, f"{idx}")):
+                                                if file.endswith((".jpg", ".jpeg", ".png")):
+                                                    image_paths.append(os.path.join(tmpdir, uploaded_file.name, f"{idx}", file))
+
+                                    # Otherwise, treat it as an image file
+                                    else:
+                                        path = os.path.join(tmpdir, f"img_{idx}.jpg")
+                                        with open(path, "wb") as f:
+                                            f.write(uploaded_file.read())
+                                        image_paths.append(path)
 
                                 zip_path = os.path.join(tmpdir, "images.zip")
                                 with zipfile.ZipFile(zip_path, "w") as zf:
@@ -88,7 +99,9 @@ else:
                                     model_name=model_name,
                                     images_path=zip_path,
                                     trigger_word=trigger_word,
-                                    description=description
+                                    description=description,
+                                    steps=steps,
+                                    lora_rank=lora_rank
                                 )
 
                             st.success("Training started!")

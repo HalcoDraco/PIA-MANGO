@@ -2,33 +2,11 @@
     "replicate_username": "datareplicate2-mng",
     "models": {
         "feature_1": {
-            "datareplicate2-mng/flux-pingpong2": {
-                "name": "flux-pingpong2",
-                "author": "datareplicate2-mng",
-                "multiple_outputs": true,
-                "description": "Flux fine-tuned with LoRA dreambooth conditioned on a pingpong ball case. Use the trigger word 'TOKPG' to generate images with this model.",
-                "trigger_word": "TOKPG",
-                "lora_dreambooth_params": {
-                    "steps": 1500,
-                    "lora_rank": 16
-                }
-            },
             "datareplicate2-mng/flux-pingpong3": {
                 "name": "flux-pingpong3",
                 "author": "datareplicate2-mng",
                 "multiple_outputs": false,
                 "description": "Flux fine-tuned with LoRA dreambooth conditioned on a pingpong ball case. Use the trigger word 'TOK' to generate images with this model.",
-                "trigger_word": "TOK",
-                "lora_dreambooth_params": {
-                    "steps": 2500,
-                    "lora_rank": 32
-                }
-            },
-            "datareplicate2-mng/my-lora-model": {
-                "name": "my-lora-model",
-                "author": "datareplicate2-mng",
-                "multiple_outputs": false,
-                "description": "Fine-tuning Flux with LoRA using DreamBooth",
                 "trigger_word": "TOK",
                 "lora_dreambooth_params": {
                     "steps": 2500,
@@ -73,9 +51,8 @@
                 "multiple_outputs": false
             }
         },
-
-        "feature_3":{
-            "model": "zsxkib/ic-light:d41bcb10d8c159868f4cfbd7c6a2ca01484f7d39e4613419d5952c61562f1ba7" 
+        "feature_3": {
+            "model": "zsxkib/ic-light:d41bcb10d8c159868f4cfbd7c6a2ca01484f7d39e4613419d5952c61562f1ba7"
         }
     },
     "lora_dreambooth_params": {

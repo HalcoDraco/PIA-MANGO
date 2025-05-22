@@ -53,6 +53,7 @@ class SettingsManager:
         settings : dict
             The settings to save.
         """
+        del settings["replicate_api_key"]
         with open(cls._FILEPATH, "w") as f:
             json.dump(settings, f, indent=4)
         
