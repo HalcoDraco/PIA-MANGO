@@ -53,10 +53,11 @@ class SettingsManager:
         settings : dict
             The settings to save.
         """
-        del settings["replicate_api_key"]
+        replicate_api_key = settings.pop("replicate_api_key", None)  # Remove the API key if present
         with open(cls._FILEPATH, "w") as f:
             json.dump(settings, f, indent=4)
         
+        settings["replicate_api_key"] = replicate_api_key  # Add the API key back to the settings
         cls._settings = settings
 
     @classmethod

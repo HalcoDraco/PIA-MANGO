@@ -20,7 +20,7 @@ if __name__ == "__main__":
     output[0].show()
 
     # model_name = "flux-pingpong3"
-    # images_path = "lora_dreambooth_tmp/Prueba_LoRA.zip"
+    # images_path = "lora_tmp/Prueba_LoRA.zip"
     # trigger_word = "TOK"
     # description = "Flux fine-tuned with LoRA dreambooth conditioned on a pingpong ball case. Use the trigger word 'TOK' to generate images with this model."
     # training = train_dreambooth_model(model_name, images_path, trigger_word, description)

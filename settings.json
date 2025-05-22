@@ -12,6 +12,17 @@
                     "steps": 2500,
                     "lora_rank": 32
                 }
+            },
+            "datareplicate2-mng/flux-pingpong6": {
+                "name": "flux-pingpong6",
+                "author": "datareplicate2-mng",
+                "multiple_outputs": false,
+                "description": "Fine-tuning Flux with LoRA using a pingpong ball case",
+                "trigger_word": "TOK",
+                "lora_dreambooth_params": {
+                    "steps": 4000,
+                    "lora_rank": 16
+                }
             }
         },
         "feature_2": {

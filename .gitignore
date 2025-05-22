@@ -1,3 +1,6 @@
 **/*venv*
 **/*__pycache__*
 ignored_api_key.txt
+lora_tmp/
+images/output/
+images/input/

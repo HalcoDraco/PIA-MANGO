@@ -1,7 +1,8 @@
 import streamlit as st
 import os
-import tempfile
+import datetime
 import zipfile
+import tempfile
 from settings_manager import SettingsManager
 from features.feature_1 import train_dreambooth_model
 from features.feature_2 import run_replicate_model
@@ -63,7 +64,7 @@ else:
             steps = st.number_input("Training Steps", min_value=100, step=100, value=default_steps)
             lora_rank = st.number_input("LoRA Rank", min_value=4, step=4, value=default_rank)
 
-            uploaded_files = st.file_uploader("Upload Training Images", type=["jpg", "jpeg", "png","zip"], accept_multiple_files=True)
+            uploaded_files = st.file_uploader("Upload Training Images as zip", type=["zip"], accept_multiple_files=False)
 
             if st.button("Start Training"):
                 if not uploaded_files:
@@ -71,38 +72,23 @@ else:
                 else:
                     with st.spinner("Uploading and starting training..."):
                         try:
-                            with tempfile.TemporaryDirectory() as tmpdir:
-                                image_paths = []
-                                for idx, uploaded_file in enumerate(uploaded_files):
+                            # Create a temporary directory to store the uploaded files
+                            tmpdir = os.path.join("lora_tmp", datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
+                            os.makedirs(tmpdir, exist_ok=True)
 
-                                    # Check if the uploaded file is a zip file
-                                    if uploaded_file.name.endswith(".zip"):
-                                        with zipfile.ZipFile(uploaded_file, "r") as zip_ref:
-                                            zip_ref.extractall(os.path.join(tmpdir, uploaded_file.name, f"{idx}"))
-                                            for file in os.listdir(os.path.join(tmpdir, uploaded_file.name, f"{idx}")):
-                                                if file.endswith((".jpg", ".jpeg", ".png")):
-                                                    image_paths.append(os.path.join(tmpdir, uploaded_file.name, f"{idx}", file))
+                            # Copy the uploaded zip file to the temporary directory
+                            zip_path = os.path.join(tmpdir, uploaded_files.name)
+                            with open(zip_path, "wb") as f:
+                                f.write(uploaded_files.getvalue())
 
-                                    # Otherwise, treat it as an image file
-                                    else:
-                                        path = os.path.join(tmpdir, f"img_{idx}.jpg")
-                                        with open(path, "wb") as f:
-                                            f.write(uploaded_file.read())
-                                        image_paths.append(path)
-
-                                zip_path = os.path.join(tmpdir, "images.zip")
-                                with zipfile.ZipFile(zip_path, "w") as zf:
-                                    for path in image_paths:
-                                        zf.write(path, arcname=os.path.basename(path))
-
-                                training = train_dreambooth_model(
-                                    model_name=model_name,
-                                    images_path=zip_path,
-                                    trigger_word=trigger_word,
-                                    description=description,
-                                    steps=steps,
-                                    lora_rank=lora_rank
-                                )
+                            training = train_dreambooth_model(
+                                model_name=model_name,
+                                images_path=zip_path,
+                                trigger_word=trigger_word,
+                                description=description,
+                                steps=steps,
+                                lora_rank=lora_rank
+                            )
 
                             st.success("Training started!")
                             st.write(f"Training ID: `{training.id}`")
