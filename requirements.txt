@@ -1,5 +1,3 @@
-replicate
-dotenv
 streamlit
-fastapi
-uvicorn
+replicate
+fastapi[standard]
