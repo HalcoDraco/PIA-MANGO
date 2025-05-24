@@ -51,8 +51,8 @@
                 "author": "luma",
                 "multiple_outputs": false
             },
-            "google/imagen-3": {
-                "name": "Imagen 3",
+            "google/imagen-4": {
+                "name": "Imagen 4",
                 "author": "google",
                 "multiple_outputs": false
             },
