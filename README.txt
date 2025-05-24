@@ -19,3 +19,5 @@ This leaderboard is based on Quality ELO (a score based on
 human evaluations via A-B testing), price and generation speed.
 You can find a more detailed analysis here:
 	https://artificialanalysis.ai/text-to-image
+
+The file Prueba_LoRA.zip contains the images used to train the example LoRA model.
