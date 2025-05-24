@@ -11,13 +11,12 @@ import zipfile
 from features.feature_3 import relight_image
 from features.feature_2 import run_replicate_model
 
+
 settings = SettingsManager.get_settings()
 REPLICATE_API_KEY = settings.get("replicate_api_key", None)
 
 if not REPLICATE_API_KEY:
     raise ValueError("Replicate API key is missing. Please check your settings.")
-
-os.environ["REPLICATE_API_TOKEN"] = REPLICATE_API_KEY
 
 # Create the Replicate client using the key
 replicate_client = replicate.Client(api_token=REPLICATE_API_KEY)

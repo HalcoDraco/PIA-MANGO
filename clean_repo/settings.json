@@ -1,0 +1,74 @@
+{
+    "replicate_username": "datareplicate2-mng",
+    "models": {
+        "feature_1": {
+            "datareplicate2-mng/flux-pingpong3": {
+                "name": "flux-pingpong3",
+                "author": "datareplicate2-mng",
+                "multiple_outputs": false,
+                "description": "Flux fine-tuned with LoRA dreambooth conditioned on a pingpong ball case. Use the trigger word 'TOK' to generate images with this model.",
+                "trigger_word": "TOK",
+                "lora_dreambooth_params": {
+                    "steps": 2500,
+                    "lora_rank": 32
+                }
+            },
+            "datareplicate2-mng/flux-pingpong6": {
+                "name": "flux-pingpong6",
+                "author": "datareplicate2-mng",
+                "multiple_outputs": false,
+                "description": "Fine-tuning Flux with LoRA using a pingpong ball case",
+                "trigger_word": "TOK",
+                "lora_dreambooth_params": {
+                    "steps": 4000,
+                    "lora_rank": 16
+                }
+            }
+        },
+        "feature_2": {
+            "stability-ai/stable-diffusion-3.5-large": {
+                "name": "Stable Diffusion 3.5 Large",
+                "author": "stability-ai",
+                "multiple_outputs": true
+            },
+            "black-forest-labs/flux-1.1-pro": {
+                "name": "Flux 1.1 Pro",
+                "author": "black-forest-labs",
+                "multiple_outputs": false
+            },
+            "ideogram-ai/ideogram-v3-quality": {
+                "name": "Ideogram V3 Quality",
+                "author": "ideogram-ai",
+                "multiple_outputs": false
+            },
+            "recraft-ai/recraft-v3": {
+                "name": "Recraft V3",
+                "author": "recraft-ai",
+                "multiple_outputs": false
+            },
+            "luma/photon": {
+                "name": "Photon",
+                "author": "luma",
+                "multiple_outputs": false
+            },
+            "google/imagen-3": {
+                "name": "Imagen 3",
+                "author": "google",
+                "multiple_outputs": false
+            },
+            "minimax/image-01": {
+                "name": "Image 01",
+                "author": "minimax",
+                "multiple_outputs": false
+            }
+        },
+        "feature_3": {
+            "model": "zsxkib/ic-light:d41bcb10d8c159868f4cfbd7c6a2ca01484f7d39e4613419d5952c61562f1ba7"
+        }
+    },
+    "lora_dreambooth_params": {
+        "steps": 2500,
+        "lora_rank": 32
+    },
+    "new_replicate_models_visibility": "private"
+}
