@@ -3,8 +3,7 @@ from settings_manager import SettingsManager
 
 settings = SettingsManager.get_settings()
 
-def relight_image(replicate_client:str = None,
-                  subject_image:None = None, 
+def relight_image(subject_image:None = None, 
                   prompt: str = "detailed face, light background, warm light, 8k, high quality, realistic, photo",
                   light_source: str = "Left Light",
                   height:int  = 640,
@@ -18,9 +17,6 @@ def relight_image(replicate_client:str = None,
 
     Parameters
     ----------
-    replicate_client : str
-        The Replicate client instance.
-
     subject_image : None
         The image to be relit.
     prompt : str
@@ -57,25 +53,15 @@ def relight_image(replicate_client:str = None,
         "steps": steps,
     }
 
-    if replicate_client == None:
-        try:
-            output = replicate.run(
-                settings["models"]["feature_3"]["model"],
-                input=input
-            )
+    try:
+        output = replicate.run(
+            settings["models"]["feature_3"]["model"],
+            input=input
+        )
 
-        except replicate.exceptions.ModelError as e:
-            print("Model error:", e)
-            raise
-    else:
-        try:
-            output = replicate_client.run(
-                settings["models"]["feature_3"]["model"],
-                input=input
-            )
-        except replicate.exceptions.ModelError as e:
-            print("Model error:", e)
-            raise
+    except replicate.exceptions.ModelError as e:
+        print("Model error:", e)
+        raise
 
     for index, item in enumerate(output):
         with open(f"images/output/output_{index}.jpg", "wb") as file:

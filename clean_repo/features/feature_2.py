@@ -2,13 +2,14 @@ import replicate
 from settings_manager import SettingsManager
 from PIL import Image
 from io import BytesIO
+import os
 
 settings = SettingsManager.get_settings()
 
 MODELS1 = settings["models"]["feature_1"]
 MODELS2 = settings["models"]["feature_2"]
 
-def run_replicate_model(model_str: str, input: dict, ):
+def run_replicate_model(model_str: str, input: dict) -> list:
     """
     Runs a specified model from Replicate with the given input parameters.
 
@@ -18,6 +19,8 @@ def run_replicate_model(model_str: str, input: dict, ):
         The name of the model to run.
     input : dict
         Input parameters for the model.
+    api_key : str, optional
+        The API key for Replicate. If not provided, it will use the one from settings.
 
     Returns
     -------

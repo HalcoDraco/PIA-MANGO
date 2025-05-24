@@ -158,7 +158,7 @@ else:
                     with open(temp_image_path, "wb") as f:
                         f.write(uploaded_file.getvalue())
                     with open(temp_image_path, "rb") as image_file:
-                        relight_image(None, image_file, prompt=caption, height=height, width=width, light_source=light, n_images=n_images, highres_scale=highres_scale, steps=steps)
+                        relight_image(image_file, prompt=caption, height=height, width=width, light_source=light, n_images=n_images, highres_scale=highres_scale, steps=steps)
                     if os.path.exists(temp_image_path):
                         st.image('images/output/output_0.jpg', use_container_width=True)
                     else:

@@ -19,9 +19,6 @@ if not REPLICATE_API_KEY:
 
 os.environ["REPLICATE_API_TOKEN"] = REPLICATE_API_KEY
 
-# Create the Replicate client using the key
-replicate_client = replicate.Client(api_token=REPLICATE_API_KEY)
-
 app = FastAPI()
 
 @app.post("/run-model/")
@@ -72,7 +69,6 @@ async def relight_endpoint(
 
     # Call relight function
     output_paths = relight_image(
-        replicate_client=replicate_client,
         subject_image=open(input_path, "rb"),
         prompt=prompt,
         light_source=light_source,

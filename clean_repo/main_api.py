@@ -11,15 +11,13 @@ import zipfile
 from features.feature_3 import relight_image
 from features.feature_2 import run_replicate_model
 
-
 settings = SettingsManager.get_settings()
 REPLICATE_API_KEY = settings.get("replicate_api_key", None)
 
 if not REPLICATE_API_KEY:
     raise ValueError("Replicate API key is missing. Please check your settings.")
 
-# Create the Replicate client using the key
-replicate_client = replicate.Client(api_token=REPLICATE_API_KEY)
+os.environ["REPLICATE_API_TOKEN"] = REPLICATE_API_KEY
 
 app = FastAPI()
 
@@ -71,7 +69,6 @@ async def relight_endpoint(
 
     # Call relight function
     output_paths = relight_image(
-        replicate_client=replicate_client,
         subject_image=open(input_path, "rb"),
         prompt=prompt,
         light_source=light_source,
